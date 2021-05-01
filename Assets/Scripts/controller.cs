@@ -8,6 +8,9 @@ public class Controller : MonoBehaviour
     private bool mouse = false;
 
     [SerializeField]
+    private bool doorNearby = false;
+
+    [SerializeField]
     private float _moveSpeed = 5f;
 
     [SerializeField]
@@ -26,11 +29,8 @@ public class Controller : MonoBehaviour
 
     void Start()
     {
-        //Cursor.visible = false; This bullshit doesn't work, instead I replaced it with:
         Cursor.lockState = CursorLockMode.Locked;
-        //Which actually works. Thanks for understanding!
-        //Pedram's Note: It still doesn't work properlly. It's probably that you fucked up the controller
-        //and it doesn't track the mouse correctly.
+
         _controller = GetComponent<CharacterController>();
     }
 
@@ -38,8 +38,9 @@ public class Controller : MonoBehaviour
 
     void Update()
     {
-        float horizontalInput = Input.GetAxis(mouse ? "Mouse X" : "Horizontal");
+        float horizontalInput = Input.GetAxis("Mouse X");
         float verticalInput = Input.GetAxis("Vertical");
+        float horizontalInputKeys = Input.GetAxis("Horizontal");
         float speed = _moveSpeed;
         bool leftShiftDown = Input.GetKeyDown(KeyCode.LeftShift);
         bool leftShiftUp = Input.GetKeyUp(KeyCode.LeftShift);
@@ -73,25 +74,46 @@ public class Controller : MonoBehaviour
           speed = _moveSpeed;
         }
 
+        if (doorNearby)
+        {
+            if (Input.GetKey("E"))
+            {
+                //Run The Door Open Script
+            }
+        }
+
         _animController.SetBool("isRunning", _leftShift);
         speed = _leftShift ? _sprintSpeed : _moveSpeed;
 
-        Vector3 direction = transform.forward;
-
+        //Vector3 direction = transform.forward;
+        Vector3 direction = transform.forward * verticalInput + Quaternion.AngleAxis(90, Vector3.up) * transform.forward * horizontalInputKeys / 1.5f;
         transform.Rotate(0, _turnSpeed * Time.deltaTime * horizontalInput, 0);
 
         direction.y -= _gravity * Time.deltaTime;
 
-        direction.x *= verticalInput;
-        direction.z *= verticalInput;
+        //direction.x *= verticalInput;
+        //direction.z *= verticalInput;
 
-        if(!_controller.isGrounded) {
+        if(!_controller.isGrounded || _animController.GetCurrentAnimatorStateInfo(0).IsName("Slash")) {
           direction.x = 0f;
           direction.z = 0f;
         }
 
+        // if(Input.GetAxis("Horizontal") < 0 && transform.rotation.y > 0){
+        //   direction = Vector3.left;
+        // }
+        // else if(Input.GetAxis("Horizontal") < 0 && transform.rotation.y < 0){
+        //   direction = Vector3.right;
+        // }
+        // else if(Input.GetAxis("Horizontal") > 0 && transform.rotation.y > 0){
+        //   direction = Vector3.right;
+        // }
+        // else if(Input.GetAxis("Horizontal") > 0 && transform.rotation.y < 0){
+        //   direction = Vector3.left;
+        // }
         _controller.Move(direction * speed * Time.deltaTime);
 
         _animController.SetBool("isWalking", Mathf.Abs(verticalInput) > 0);
+        _animController.SetBool("isStrafing", Mathf.Abs(horizontalInputKeys) > 0);
     }
 }

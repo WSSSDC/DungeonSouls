@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class DoorManager : MonoBehaviour
 {
+    private enum doorType { SingleDoor, DoubleDoorL, DoubleDoorR};
+
     [SerializeField]
     private float degrees = 90f;
 
-    void Update()
-    {        
-        Vector3 to = new Vector3(0, degrees, 0);
+    [SerializeField]
+    doorType type;
 
-        transform.eulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, to, Time.deltaTime);
+    void Update()
+    {
+        Vector3 to = new Vector3(0, degrees, 0);
+        if (type == doorType.SingleDoor)
+        {
+            transform.eulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, to, Time.deltaTime);
+        }
     }
 }
