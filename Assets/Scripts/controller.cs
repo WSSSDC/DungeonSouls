@@ -2,48 +2,77 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class controller : MonoBehaviour
+public class Controller : MonoBehaviour
 {
     [SerializeField]
+    private bool mouse = false;
+
+    [SerializeField]
     private float _moveSpeed = 5f;
-    
+
     [SerializeField]
     private float _gravity = 9.81f;
 
     [SerializeField]
-    private float _sprintMultiplier = 1.5f;
+    private float _sprintSpeed = 10f;
 
     [SerializeField]
-    private float _turnSpeed = 0.1f;
+    private float _turnSpeed = 10f;
+
+    [SerializeField]
+    private Animator _animController;
 
     private CharacterController _controller;
 
-    private float _directionY;
-    private float _turnSmoothVelocity;
+
+
 
     void Start()
     {
         _controller = GetComponent<CharacterController>();
     }
 
+    bool _leftShift = false;
+
     void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
+        float horizontalInput = Input.GetAxis(mouse ? "Mouse X" : "Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
+        float speed = _moveSpeed;
+        bool leftShiftDown = Input.GetKeyDown(KeyCode.LeftShift);
+        bool leftShiftUp = Input.GetKeyUp(KeyCode.LeftShift);
 
-        Vector3 direction = new Vector3(-horizontalInput, 0, -verticalInput);
-        
-        _directionY -= _gravity * Time.deltaTime;
-        if(Input.GetKeyDown(KeyCode.LeftShift)){
-            direction.x = direction.x * _sprintMultiplier;
+        if(leftShiftDown) {
+          _leftShift = true;
+          _animController.SetBool("isRunning", true);
+          speed = _sprintSpeed;
         }
-        float _targetAngle = Mathf.Atan2(-direction.x, -direction.y) * Mathf.Rad2Deg;
-        float _angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetAngle, ref _turnSmoothVelocity, _turnSpeed);
 
-        direction.y = _directionY;
+        if(leftShiftUp) {
+          _leftShift = false;
 
-        transform.rotation = Quaternion.Euler(0f, _angle, 0f);
-        _controller.Move(direction * _moveSpeed * Time.deltaTime);
-        
+          speed = _moveSpeed;
+        }
+
+        _animController.SetBool("isRunning", _leftShift);
+        speed = _leftShift ? _sprintSpeed : _moveSpeed;
+
+        Vector3 direction = transform.forward;
+
+        transform.Rotate(0, _turnSpeed * Time.deltaTime * horizontalInput, 0);
+
+        direction.y -= _gravity * Time.deltaTime;
+
+        direction.x *= verticalInput;
+        direction.z *= verticalInput;
+
+        if(!_controller.isGrounded) {
+          direction.x = 0f;
+          direction.z = 0f;
+        }
+
+        _controller.Move(direction * speed * Time.deltaTime);
+
+        _animController.SetBool("isWalking", Mathf.Abs(verticalInput) > 0);
     }
 }

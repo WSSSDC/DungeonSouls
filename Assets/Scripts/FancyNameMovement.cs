@@ -4,31 +4,40 @@ using UnityEngine;
 
 public class FancyNameMovement : MonoBehaviour
 {
-    public Transform bruh;
-
     RectTransform bigboobies;
 
     void Start()
     {
         bigboobies = gameObject.GetComponent<RectTransform>();
+        StartCoroutine(enu());
+        IEnumerator enu()
+        {
+            for (; ; ) {
+   
+                StartCoroutine(enumerator());
+                yield return new WaitForSeconds(2.5f);
+            }
+        }
+        IEnumerator enumerator()
+        {
+            for (int i = -50; i > -100; i--)
+            {
+                yield return new WaitForSeconds(0.05f);
+                bigboobies.anchoredPosition3D = new Vector3(321, i, 0);
+                //Debug.Log("A " + i);
+            }
+
+            for (int i = -100; i < -50; i++)
+            {
+                yield return new WaitForSeconds(0.05f);
+                bigboobies.anchoredPosition3D = new Vector3(321, i, 0);
+                //Debug.Log("A " + i);
+            }
+        }
     }
 
     void Update()
     {
-        StartCoroutine(enumerator());
-        IEnumerator enumerator()
-        {
-            for (int i = 175; i > 150; i--)
-            {
-                bigboobies.anchoredPosition3D = new Vector3(0, i, 0);
-                yield return new WaitForSeconds(1f);
-            }
-
-            for (int i = 150; i < 175; i++)
-            {
-                bigboobies.anchoredPosition3D = new Vector3(0, i, 0);
-                yield return new WaitForSeconds(1f);
-            }
-        }
+        
     }
 }
