@@ -8,9 +8,6 @@ public class Controller : MonoBehaviour
     private bool mouse = false;
 
     [SerializeField]
-    private bool doorNearby = false;
-
-    [SerializeField]
     private float _moveSpeed = 5f;
 
     [SerializeField]
@@ -45,7 +42,17 @@ public class Controller : MonoBehaviour
         bool leftShiftDown = Input.GetKeyDown(KeyCode.LeftShift);
         bool leftShiftUp = Input.GetKeyUp(KeyCode.LeftShift);
         bool mouseClick = Input.GetMouseButtonDown(0);
-        bool isAiming = Input.GetMouseButtonDown(1); //Right Click Capture For Aiming The Bow
+        bool isAiming = false; //Right Click Capture For Aiming The Bow
+        bool blockDown = Input.GetMouseButtonDown(1);
+        bool blockUp = Input.GetMouseButtonUp(1);
+
+        if(blockDown) {
+          _animController.SetBool("isBlocking", true);
+        }
+
+        if (blockUp) {
+          _animController.SetBool("isBlocking", false);
+        }
 
         if(mouseClick) {
           _animController.CrossFade("Slash", 0.5f);
@@ -54,12 +61,10 @@ public class Controller : MonoBehaviour
         if (isAiming)
         {
             _animController.SetBool("isAiming", true);
-            Debug.Log("Aiming");
         }
         else
         {
             _animController.SetBool("isAiming", false);
-            Debug.Log("Not Aiming");
         }
 
         if (leftShiftDown) {
@@ -74,14 +79,6 @@ public class Controller : MonoBehaviour
           speed = _moveSpeed;
         }
 
-        if (doorNearby)
-        {
-            if (Input.GetKey("E"))
-            {
-                //Run The Door Open Script
-            }
-        }
-
         _animController.SetBool("isRunning", _leftShift);
         speed = _leftShift ? _sprintSpeed : _moveSpeed;
 
@@ -94,7 +91,7 @@ public class Controller : MonoBehaviour
         //direction.x *= verticalInput;
         //direction.z *= verticalInput;
 
-        if(!_controller.isGrounded || _animController.GetCurrentAnimatorStateInfo(0).IsName("Slash")) {
+        if(!_controller.isGrounded || _animController.GetCurrentAnimatorStateInfo(0).IsName("Slash") || _animController.GetCurrentAnimatorStateInfo(0).IsName("BlockIdle")) {
           direction.x = 0f;
           direction.z = 0f;
         }

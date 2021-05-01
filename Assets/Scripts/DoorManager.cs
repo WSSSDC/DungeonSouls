@@ -1,23 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DoorManager : MonoBehaviour
 {
-    private enum doorType { SingleDoor, DoubleDoorL, DoubleDoorR};
-
+    private bool _interacting = false;
     [SerializeField]
     private float degrees = 90f;
 
-    [SerializeField]
-    doorType type;
-
     void Update()
     {
-        Vector3 to = new Vector3(0, degrees, 0);
-        if (type == doorType.SingleDoor)
+        if (Input.GetKey(KeyCode.E))
         {
-            transform.eulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, to, Time.deltaTime);
+            _interacting = true;
+        }
+        OpenDoor();
+    }
+
+    void OpenDoor()
+    {
+        Quaternion target = Quaternion.Euler(0, degrees, 0);
+        if (_interacting)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, target,  Time.deltaTime);
+        }
+
+        if (transform.rotation == target)
+        {
+            _interacting = false;
         }
     }
 }

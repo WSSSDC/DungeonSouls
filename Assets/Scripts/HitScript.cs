@@ -26,7 +26,7 @@ public class HitScript : MonoBehaviour
         else if(other.tag == "SkeletonArrow"){
             _health -= _baseSkeletonDamage;
         }
-        else if(other.tag == "SkeletonMage"){
+        else if(other.tag == "SkeletonMageBlast"){
             _health -= _baseSkeletonDamage * 1.3f;
         }
         else if(other.tag == "SkeletonKnight"){
