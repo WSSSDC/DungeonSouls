@@ -9,6 +9,11 @@ public class HitScript : MonoBehaviour
     public float _baseSkeletonDamage;
     public float _miniBossDamageMultiplier;
     public float _bossDamage;
+    private Animator _animController;
+
+    void Start() {
+      _animController = GetComponent<Animator>();
+    }
 
     private void OnTriggerEnter(Collider other) {
         if(other.tag == "GoblinMinion"){
@@ -35,5 +40,16 @@ public class HitScript : MonoBehaviour
         else if(other.tag == "OrcCheiftan"){
             _health -= _bossDamage;
         }
+
+        if(_health <= 0) {
+          StartCoroutine(Die());
+        }
+    }
+
+    IEnumerator Die()
+    {
+        _animController.CrossFade("Death", 0.2f);
+        yield return new WaitForSeconds(2f);
+        //Reset
     }
 }

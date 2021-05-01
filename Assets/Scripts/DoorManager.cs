@@ -8,12 +8,18 @@ public class DoorManager : MonoBehaviour
     private bool _interacting = false;
     [SerializeField]
     private float degrees = 90f;
+    
+    private GameObject[] gos;
 
     void Update()
     {
+        gos = GameObject.FindGameObjectsWithTag("Player");
         if (Input.GetKey(KeyCode.E))
         {
-            _interacting = true;
+            if (Vector3.Distance(gos[0].transform.position, transform.position) < 15)
+            {
+                _interacting = true;
+            }
         }
         OpenDoor();
     }

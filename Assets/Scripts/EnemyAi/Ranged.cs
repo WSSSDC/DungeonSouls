@@ -17,7 +17,7 @@ public class Ranged : MonoBehaviour
         void Start()
     {
         _attackTime = _attackSpeed;
-        _player = GameObject.Find("Player").transform;
+        _player = GameObject.Find("Character").transform;
     }
 
     

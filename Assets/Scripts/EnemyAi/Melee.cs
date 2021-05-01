@@ -16,7 +16,7 @@ public class Melee : MonoBehaviour
         void Start()
     {
         _attackTime = _attackSpeed;
-        _player = GameObject.Find("Player").transform;
+        _player = GameObject.Find("Character").transform;
     }
 
     
@@ -30,17 +30,13 @@ public class Melee : MonoBehaviour
         if(_playerInSight && _playerInRange)AttackPlayer();
     }
 
-    private void Awake() 
-    {
-        _agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-    }
 
     private void Wander()
     {
         if(_wanderLocationFound)
         {
             _agent.SetDestination(_wanderLocation);
-            Run();
+            //Run();
         }else
         {
             SearchWanderLocation();
@@ -60,7 +56,7 @@ public class Melee : MonoBehaviour
     private void ChasePlayer()
     {
         _agent.SetDestination(_player.position);
-        Run();
+        //Run();
     }
 
     private void AttackPlayer()
@@ -75,7 +71,7 @@ public class Melee : MonoBehaviour
         Vector3 _distanceToPlayer = transform.position - _targetPos;
         if (_distanceToPlayer.magnitude > 2f){
             _agent.SetDestination(_player.position);
-            Run();
+            //Run();
         }
         else{
             _agent.SetDestination(transform.position);
