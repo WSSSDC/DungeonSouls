@@ -30,9 +30,9 @@ public class controller : MonoBehaviour
         Vector3 direction = new Vector3(-horizontalInput, 0f, -verticalInput).normalized;
         
         _directionY -= _gravity * Time.deltaTime;
-        // if(Input.GetKeyDown("RightControl")){
-        //     direction.x = direction.x * _sprintMultiplier;
-        // }
+        if(Input.GetKeyDown(KeyCode.LeftShift)){
+            direction.x = direction.x * _sprintMultiplier;
+        }
 
         direction.y = _directionY;
 
