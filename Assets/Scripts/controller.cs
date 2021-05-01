@@ -24,11 +24,13 @@ public class Controller : MonoBehaviour
 
     private CharacterController _controller;
 
-
-
-
     void Start()
     {
+        //Cursor.visible = false; This bullshit doesn't work, instead I replaced it with:
+        Cursor.lockState = CursorLockMode.Locked;
+        //Which actually works. Thanks for understanding!
+        //Pedram's Note: It still doesn't work properlly. It's probably that you fucked up the controller
+        //and it doesn't track the mouse correctly.
         _controller = GetComponent<CharacterController>();
     }
 
@@ -41,8 +43,25 @@ public class Controller : MonoBehaviour
         float speed = _moveSpeed;
         bool leftShiftDown = Input.GetKeyDown(KeyCode.LeftShift);
         bool leftShiftUp = Input.GetKeyUp(KeyCode.LeftShift);
+        bool mouseClick = Input.GetMouseButtonDown(0);
+        bool isAiming = Input.GetMouseButtonDown(1); //Right Click Capture For Aiming The Bow
 
-        if(leftShiftDown) {
+        if(mouseClick) {
+          _animController.CrossFade("Slash", 0.5f);
+        }
+
+        if (isAiming)
+        {
+            _animController.SetBool("isAiming", true);
+            Debug.Log("Aiming");
+        }
+        else
+        {
+            _animController.SetBool("isAiming", false);
+            Debug.Log("Not Aiming");
+        }
+
+        if (leftShiftDown) {
           _leftShift = true;
           _animController.SetBool("isRunning", true);
           speed = _sprintSpeed;
