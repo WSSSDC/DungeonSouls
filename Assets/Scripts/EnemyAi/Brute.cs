@@ -7,19 +7,22 @@ public class Brute : MonoBehaviour
     public UnityEngine.AI.NavMeshAgent _agent;
     public LayerMask _whatIsGround, _whatIsPlayer;
     public float _sightRange, _attackRange, _moveSpeed, _wanderRange, _attackSpeed, _blockTendancy;
-    public Animator enemyAnimator;
+    private Animator enemyAnimator;
     private bool _wanderLocationFound = false, _playerInSight = false, _playerInRange = false;
     private Vector3 _wanderLocation;
     private float _attackTime;
     private Transform _player;
-    
-        void Start()
+    private float _time;
+
+    void Start()
     {
         _attackTime = _attackSpeed;
         _player = GameObject.Find("Character").transform;
+        enemyAnimator = GetComponent<Animator>();
+        _time = Time.time;
     }
 
-    
+
     void Update()
     {
         _playerInSight = Physics.CheckSphere(transform.position, _sightRange, _whatIsPlayer);
@@ -28,6 +31,8 @@ public class Brute : MonoBehaviour
         if(!_playerInSight && !_playerInRange)Wander();
         if(_playerInSight && !_playerInRange)ChasePlayer();
         if(_playerInSight && _playerInRange)AttackPlayer();
+
+        RunningTimeout();
     }
 
 
@@ -36,7 +41,7 @@ public class Brute : MonoBehaviour
         if(_wanderLocationFound)
         {
             _agent.SetDestination(_wanderLocation);
-            //Run();
+            Run();
         }else
         {
             SearchWanderLocation();
@@ -56,7 +61,7 @@ public class Brute : MonoBehaviour
     private void ChasePlayer()
     {
         _agent.SetDestination(_player.position);
-        //Run();
+        Run();
     }
 
     private void AttackPlayer()
@@ -71,7 +76,7 @@ public class Brute : MonoBehaviour
         Vector3 _distanceToPlayer = transform.position - _targetPos;
         if (_distanceToPlayer.magnitude > 2f){
             _agent.SetDestination(_player.position);
-            //Run();
+            Run();
         }
         else{
             _agent.SetDestination(transform.position);
@@ -79,11 +84,18 @@ public class Brute : MonoBehaviour
     }
 
     private void Run(){
-        if(!enemyAnimator.GetCurrentAnimatorStateInfo(0).IsName("run"))
-        enemyAnimator.Play("run");
+      _time = Time.time;
+      enemyAnimator.SetBool("isWalking", true);
     }
 
     private void LightAttack(){
         //TODO: Set up light attack with Connor
+    }
+
+    void RunningTimeout()
+    {
+        if(Mathf.Abs(_time - Time.time) > 0.1f) {
+          enemyAnimator.SetBool("isWalking", false);
+        }
     }
 }
