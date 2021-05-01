@@ -26,11 +26,23 @@ public class Controller : MonoBehaviour
     private Animator _animController;
 
     private CharacterController _controller;
+    private GameObject shield;
+    private MeshRenderer shieldRenderer;
+    private GameObject sword;
+    private MeshRenderer swordRenderer;
+    private GameObject bow;
+    private MeshRenderer bowRenderer;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        shield = GameObject.Find("SM_Wep_Shield_Heater_02");
+        shieldRenderer = shield.GetComponent<MeshRenderer>();
+        sword = GameObject.Find("SM_Wep_GreatSword_01");
 
+        swordRenderer = sword.GetComponent<MeshRenderer>();
+        bow = GameObject.Find("LowPolyAssetsBow");
+        bowRenderer = bow.GetComponent<MeshRenderer>();
         _controller = GetComponent<CharacterController>();
     }
 
@@ -53,40 +65,33 @@ public class Controller : MonoBehaviour
         bool isSlashing = _animController.GetCurrentAnimatorStateInfo(0).IsName("Slash");
         bool mouseIsClicking = false;
 
-        if (Input.GetKey(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            Debug.Log("Modes Switched" + bowMode);
-            if (!bowMode)
-            {
-                bowMode = true;
-                
-                _animController.SetBool("isBowEquipped", true);
-                
-            }
-            else
-            {
-                bowMode = false;
-                _animController.SetBool("isBowEquipped", false);
-            }
+          bowMode = !bowMode;
+          _animController.SetBool("isBowEquipped", bowMode);
+          changeMode();
         }
-        if (Input.GetMouseButtonDown(1) && bowMode)
+
+
+        if (blockDown && bowMode)
         {
             _animController.SetBool("isAiming", true);
         }
-        if (Input.GetMouseButtonUp(1) && bowMode)
+
+        if (blockUp && bowMode)
         {
             _animController.SetBool("isAiming", false);
         }
-        
-        if(blockDown) {
+
+        if(blockDown && !bowMode) {
           _animController.SetBool("isBlocking", true);
         }
 
-        if (blockUp) {
+        if (blockUp && !bowMode) {
           _animController.SetBool("isBlocking", false);
         }
 
-        if (mouseClick)
+        if (mouseClick && !bowMode)
         {
             if (slashState == SlashState.Slashing)
             {
@@ -97,16 +102,9 @@ public class Controller : MonoBehaviour
                 _animController.CrossFade("Slash", 0.2f);
                 StartCoroutine(SlashRoutine());
             }
-            else
-            {
-                if (_animController.GetCurrentAnimatorStateInfo(0).IsName("Backhand"))
-                {
-
-                }
-            }
         }
 
-        if (leftShiftDown) {
+        if (leftShiftDown && !bowMode) {
           _leftShift = true;
           _animController.SetBool("isRunning", true);
           speed = _sprintSpeed;
@@ -114,7 +112,6 @@ public class Controller : MonoBehaviour
 
         if(leftShiftUp) {
           _leftShift = false;
-
           speed = _moveSpeed;
         }
 
@@ -140,7 +137,7 @@ public class Controller : MonoBehaviour
 
 
 
-        if(!_controller.isGrounded || isSlashing || _animController.GetCurrentAnimatorStateInfo(0).IsName("BlockIdle")) {
+        if(!_controller.isGrounded || (slashState == SlashState.Slashing) || _animController.GetCurrentAnimatorStateInfo(0).IsName("BlockIdle")) {
           direction.x = 0f;
           direction.z = 0f;
         }
@@ -151,6 +148,12 @@ public class Controller : MonoBehaviour
         _animController.SetBool("isWalking", Mathf.Abs(verticalInput) > 0);
         _animController.SetBool("isStrafing", Mathf.Abs(horizontalInputKeys) > 0);
 
+    }
+
+    void changeMode() {
+      shieldRenderer.enabled = !bowMode;
+      swordRenderer.enabled = !bowMode;
+      bowRenderer.enabled = bowMode;
     }
 
     IEnumerator SlashRoutine()

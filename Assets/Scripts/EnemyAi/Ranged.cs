@@ -8,11 +8,12 @@ public class Ranged : MonoBehaviour
     public LayerMask _whatIsGround, _whatIsPlayer;
     public float _sightRange, _moveSpeed, _wanderRange, _attackSpeed, _projectileSpeed;
     public GameObject arrow;
+    public Transform _shootPoint;
     public Animator enemyAnimator;
     private bool _wanderLocationFound = false, _playerInSight = false;
     private Vector3 _wanderLocation;
     private float _attackTime;
-    private Transform _player, _shootPoint;
+    private Transform _player;
     
         void Start()
     {
@@ -74,6 +75,8 @@ public class Ranged : MonoBehaviour
     }
 
     private void ShootArrow(){
-        //TODO: Set up projectile motion and set up the arrow to work
+        GameObject Arr = Instantiate(arrow, _shootPoint.position, _shootPoint.rotation);
+        Rigidbody rb = Arr.GetComponent<Rigidbody>();
+        rb.AddForce(transform.forward * _projectileSpeed * Time.deltaTime, ForceMode.VelocityChange);
     }
 }

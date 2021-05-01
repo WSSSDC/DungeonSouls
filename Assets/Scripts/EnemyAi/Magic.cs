@@ -8,11 +8,12 @@ public class Magic : MonoBehaviour
     public LayerMask _whatIsGround, _whatIsPlayer;
     public float _sightRange, _attackRange, _moveSpeed, _wanderRange, _attackSpeed;
     public GameObject magic;
+    public Transform _castPoint;
     public Animator enemyAnimator;
     private bool _wanderLocationFound = false, _playerInSight = false, _playerInRange = false;
     private Vector3 _wanderLocation;
     private float _attackTime;
-    private Transform _player, _castPoint;
+    private Transform _player;
     
         void Start()
     {
