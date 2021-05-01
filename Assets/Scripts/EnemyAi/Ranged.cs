@@ -12,7 +12,7 @@ public class Ranged : MonoBehaviour
     private bool _wanderLocationFound = false, _playerInSight = false;
     private Vector3 _wanderLocation;
     private float _attackTime;
-    private Transform _player;
+    private Transform _player, _shootPoint;
     
         void Start()
     {
