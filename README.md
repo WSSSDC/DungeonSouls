@@ -48,4 +48,4 @@ Dungeon Souls was built using the Unity game engine and was designed with Synty 
 * More enemies
 
 # Acknowledgements
-We want to thank everyone RUHacks2021 for giving us this opportunity. We would also like to thank Synty Studios for providing all the high quality and easy-to-use assets 😜.
+We want to thank everyone RUHacks2021 for giving us this opportunity. We would also like to thank Synty Studios for providing all the high quality and easy-to-use assets .
