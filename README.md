@@ -5,7 +5,7 @@ You can go to our website to play the web version right from your browser! Or yo
 We decided to make Dungeon Souls because we wanted to hone our skills in game development by going for a much larger game with more mechanics.
 
 # Background
-You're a minimum waged knight looking to make some quick bucks. You've heard of this evil and filthy rich goblin king living in an abandoned castle far away from any civilization. You make it your mission to defeat the goblin king and his minions and take over the castle and all his wealth.
+The legendary sword, Excalibur has been lost for 200 years. No one knows where it is. You're a bounty hunter looking to make some quick bucks. You've heard of this evil and filthy rich goblin king living in an abandoned castle far away from any civilization. You make it your mission to defeat the goblin king and his minions and take over the castle in hopes of claiming Excalibur for yourself.
 
 # How we built it
 Dungeon Souls was built using the Unity game engine and was designed with Synty low-poly asset packs. The scripts were coded in C#. It took 5 assets, XXX soundtracks and, 850 lines of code written by us (Total: 6.26K).
@@ -14,14 +14,16 @@ Dungeon Souls was built using the Unity game engine and was designed with Synty 
 * Getting physics to work
 * Enemy A.I.
 * Camera Controls
-* 
+* Balancing combat
+* Animations not meshing together
 
 # Accomplishments that we're proud of
-* Being able to make an improved combat system with health bars and more complex enemy AI
-* Making animations for more fluid gamplay
+* Being able to make an improved combat system with health bars and more varied enemy AI
+* Getting animations for more fluid gamplay
 * A lot of new enemy types (12)
 * Adding bow combat
 * Cutscenes
+* Adding music and other ambient sounds to improve the experience
 
 # What we learned
 * Physics Simulation In Unity
