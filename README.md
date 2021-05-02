@@ -5,17 +5,16 @@ You can go to our website to play the web version right from your browser! Or yo
 We decided to make Dungeon Souls because we wanted to hone our skills in game development by going for a much larger game with more mechanics.
 
 # Background
-You have been summoned by the King to rid this ancienct castle of goblins, you must fight your way through droves of goblins to rid the castle of this wicked scourge. [CHANGE LATER]
+You're a minimum waged knight looking to make some quick bucks. You've heard of this evil and filthy rich goblin king living in an abandoned castle far away from any civilization. You make it your mission to defeat the goblin king and his minions and take over the castle and all his wealth.
 
 # How we built it
-Dungeon Souls was built using the Unity game engine and was designed with Synty asset packs. The scripts were coded in C#. It took XXX assets, XXX soundtracks and, XXX lines of code.
+Dungeon Souls was built using the Unity game engine and was designed with Synty low-poly asset packs. The scripts were coded in C#. It took 5 assets, XXX soundtracks and, 850 lines of code written by us (Total: 6.26K).
 
 # Challenges we ran into
-Due to the lack of game design and development experience across the team, we faced the following challenges:
-
 * Getting physics to work
-* Finding Assets
-* Fixing Lighting and Shadows
+* Enemy A.I.
+* Camera Controls
+* 
 
 # Accomplishments that we're proud of
 * Being able to make an improved combat system with health bars and more complex enemy AI
@@ -27,9 +26,8 @@ Due to the lack of game design and development experience across the team, we fa
 # What we learned
 * Physics Simulation In Unity
 * More Complex C#
-* Basic AI for enemies
-* 3D game design in Unity
-* Creating Healthbars and the HUD
+* More advanced 3D game design in Unity
+* Better Healthbars and HUD
 * 3D is like 2D, but with an extra dimension
 * Creating complex enemy AI, aggro ranges, sight, ideal radius from player, subroutines, formations
 
@@ -37,11 +35,11 @@ Due to the lack of game design and development experience across the team, we fa
 * Improve the lighting
 * Add an inventory system
 * Improve enemy AI and variety
-* Make some cutscenes
+* Make more cutscenes
 * More Animations
 * Adding more levels
 * Introducing new mechanics and gameplay
 * More enemies
 
 # Acknowledgements
-We want to thank everyone RUHacks2021 for giving us this opportunity. We would also like to thank Synty for the assets and Unity for putting them on sale 😜.
+We want to thank everyone RUHacks2021 for giving us this opportunity. We would also like to thank Synty Studios for providing all the high quality and easy-to-use assets 😜.
