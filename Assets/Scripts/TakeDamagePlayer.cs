@@ -29,7 +29,8 @@ public class TakeDamagePlayer : MonoBehaviour
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Slash")) {
           animator.CrossFade("Hit", 0.1f);
         }
-        health -= amount;
+        //Debug.Log(GetComponent<Controller>().isBlocking);
+        health -= GameObject.Find("Character").GetComponent<Controller>().isBlocking ? 0 : amount;
         healthSlider.GetComponent<Slider>().value = health;
       } else {
         StartCoroutine(Die());

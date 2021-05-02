@@ -42,6 +42,8 @@ public class Controller : MonoBehaviour
     private TakeDamagePlayer takeDamagePlayer;
     private GameObject playerObject;
 
+    public bool isBlocking = false;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -94,7 +96,6 @@ public class Controller : MonoBehaviour
           changeMode();
         }
 
-
         if (blockDown && bowMode)
         {
             crosshair.active = true;
@@ -109,10 +110,12 @@ public class Controller : MonoBehaviour
 
         if(blockDown && !bowMode) {
           _animController.SetBool("isBlocking", true);
+          isBlocking = true;
         }
 
         if (blockUp && !bowMode) {
           _animController.SetBool("isBlocking", false);
+          isBlocking = false;
         }
 
         if (mouseClick && !bowMode)
@@ -139,40 +142,31 @@ public class Controller : MonoBehaviour
           speed = _moveSpeed;
         }
 
-        if (doorNearby)
-        {
-            if (Input.GetKey("E"))
-            {
-                //Run The Door Open Script
-            }
-        }
-
         _animController.SetBool("isRunning", _leftShift);
         speed = _leftShift ? _sprintSpeed : _moveSpeed;
 
-        //Vector3 direction = transform.forward;
         Vector3 direction = transform.forward * verticalInput + Quaternion.AngleAxis(90, Vector3.up) * transform.forward * horizontalInputKeys / 1.5f;
         transform.Rotate(0, _turnSpeed * Time.deltaTime * horizontalInput, 0);
 
         direction.y -= _gravity * Time.deltaTime;
 
-        //direction.x *= verticalInput;
-        //direction.z *= verticalInput;
-
-
-
-        if(!_controller.isGrounded || (slashState == SlashState.Slashing) || _animController.GetCurrentAnimatorStateInfo(0).IsName("BlockIdle")) {
+        if(!_controller.isGrounded ||
+        (slashState == SlashState.Slashing) ||
+        (!_animController.GetCurrentAnimatorStateInfo(0).IsName("Walk")
+        && !_animController.GetCurrentAnimatorStateInfo(0).IsName("Run")
+        && !_animController.GetCurrentAnimatorStateInfo(0).IsName("BowWalking")
+        && !_animController.GetCurrentAnimatorStateInfo(0).IsName("Strafe")
+        && !_animController.GetCurrentAnimatorStateInfo(0).IsName("BowAimWalking")
+        )) {
           direction.x = 0f;
           direction.z = 0f;
         }
-
 
         _controller.Move(direction * speed * Time.deltaTime);
 
         _animController.SetBool("isWalking", Mathf.Abs(verticalInput) > 0);
         _animController.SetBool("isStrafing", Mathf.Abs(horizontalInputKeys) > 0);
       }
-
     }
 
     void changeMode() {

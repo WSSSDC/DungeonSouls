@@ -26,7 +26,8 @@ public class TakeDamageEnemy : MonoBehaviour
 
     void Die() {
       if(!dead) {
-        GameObject.Find("Character_Hero_Knight_Male").GetComponent<TakeDamagePlayer>().GiveHealth(15);
+        GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
+        GameObject.Find("Character_Hero_Knight_Male").GetComponent<TakeDamagePlayer>().GiveHealth(health / 2);
         enemyAnimator.CrossFade("Death", 0.5f);
         dead = true;
       }

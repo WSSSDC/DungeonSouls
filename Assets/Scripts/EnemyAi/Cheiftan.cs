@@ -42,6 +42,12 @@ public class Cheiftan : MonoBehaviour
         if(_playerInSight && !_playerInRange) ChasePlayer();
         if(_playerInRange) AttackPlayer();
 
+        if(!_playerInSight && !_playerInRange) {
+            enemyAnimator.SetBool("isSitting", true);
+        } else {
+            enemyAnimator.SetBool("isSitting", false);
+        }
+
         RunningTimeout();
       }
     }
