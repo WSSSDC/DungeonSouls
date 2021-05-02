@@ -6,7 +6,7 @@ public class Magic : MonoBehaviour
 {
     public UnityEngine.AI.NavMeshAgent _agent;
     public LayerMask _whatIsGround, _whatIsPlayer;
-    public float _sightRange, _attackRange, _moveSpeed, _wanderRange, _attackSpeed;
+    public float _sightRange, _attackRange, _moveSpeed, _wanderRange, _attackSpeed, _projectileSpeed;
     public GameObject magic;
     public Transform _castPoint;
     public Animator enemyAnimator;
@@ -101,6 +101,8 @@ public class Magic : MonoBehaviour
     }
 
     private void CastMagic(){
-        //TODO: Set up magic
+        GameObject spell = Instantiate(magic, _castPoint.position, transform.rotation);
+        Rigidbody rb = spell.GetComponent<Rigidbody>();
+        rb.AddForce(transform.forward * (_projectileSpeed * 0.1f) * Time.deltaTime, ForceMode.VelocityChange);
     }
 }

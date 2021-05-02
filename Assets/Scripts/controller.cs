@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class Controller : MonoBehaviour
     private float _turnSpeed = 10f;
 
     [SerializeField]
+    private float _damage = 15f;
+
+    [SerializeField]
     private Animator _animController;
 
     private CharacterController _controller;
@@ -32,6 +36,11 @@ public class Controller : MonoBehaviour
     private MeshRenderer swordRenderer;
     private GameObject bow;
     private MeshRenderer bowRenderer;
+
+    private GameObject crosshair;
+
+    private TakeDamagePlayer takeDamagePlayer;
+    private GameObject playerObject;
 
     void Start()
     {
@@ -44,10 +53,16 @@ public class Controller : MonoBehaviour
         bow = GameObject.Find("LowPolyAssetsBow");
         bowRenderer = bow.GetComponent<MeshRenderer>();
         _controller = GetComponent<CharacterController>();
+
+        crosshair = GameObject.Find("Crosshair");
+        crosshair.active = false;
+
+        playerObject = GameObject.Find("Character_Hero_Knight_Male");
+        takeDamagePlayer = playerObject.GetComponent<TakeDamagePlayer>();
     }
 
     bool _leftShift = false;
-    private bool bowMode = false;
+    public bool bowMode = false;
     enum SlashState {None, Slashing, Comboing};
     SlashState slashState = SlashState.None;
 
@@ -65,6 +80,13 @@ public class Controller : MonoBehaviour
         bool isSlashing = _animController.GetCurrentAnimatorStateInfo(0).IsName("Slash");
         bool mouseIsClicking = false;
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene(0);
+        }
+
+        if(takeDamagePlayer.health > 0) {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
           bowMode = !bowMode;
@@ -75,11 +97,13 @@ public class Controller : MonoBehaviour
 
         if (blockDown && bowMode)
         {
+            crosshair.active = true;
             _animController.SetBool("isAiming", true);
         }
 
         if (blockUp && bowMode)
         {
+            GameObject.Find("Crosshair").active = false;
             _animController.SetBool("isAiming", false);
         }
 
@@ -147,6 +171,7 @@ public class Controller : MonoBehaviour
 
         _animController.SetBool("isWalking", Mathf.Abs(verticalInput) > 0);
         _animController.SetBool("isStrafing", Mathf.Abs(horizontalInputKeys) > 0);
+      }
 
     }
 
@@ -159,9 +184,9 @@ public class Controller : MonoBehaviour
     IEnumerator SlashRoutine()
     {
         slashState = SlashState.Slashing;
-        //yield return new WaitForSeconds(0.3f);
-        yield return new WaitForSeconds(1.3f);
-        Debug.Log(slashState);
+        yield return new WaitForSeconds(0.4f);
+        DoDamage();
+        yield return new WaitForSeconds(0.9f);
         if (slashState == SlashState.Comboing) {
           _animController.CrossFade("Backhand", 0.2f);
           StartCoroutine(ComboRountine());
@@ -172,7 +197,22 @@ public class Controller : MonoBehaviour
 
     IEnumerator ComboRountine()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         slashState = SlashState.None;
+    }
+
+    void DoDamage() {
+      GameObject[] gos;
+      gos = GameObject.FindGameObjectsWithTag("Enemy");
+      Vector3 position = transform.position;
+      foreach (GameObject go in gos)
+      {
+          Vector3 diff = go.transform.position - position;
+          float dist = diff.sqrMagnitude;
+          if (dist < 4f && go.GetComponent<TakeDamageEnemy>() != null)
+          {
+              go.GetComponent<TakeDamageEnemy>().TakeDamage(_damage);
+          }
+      }
     }
 }

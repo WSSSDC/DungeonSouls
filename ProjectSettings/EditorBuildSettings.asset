@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 66d04cf3e9469b045ae7be270dd549a6
+  - enabled: 1
+    path: Assets/PolygonDungeonMap/Scene/Dungeon_Map_Demo.unity
+    guid: ce6e637245198364d94ebf8230a8e97e
   m_configObjects: {}

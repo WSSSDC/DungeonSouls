@@ -818,9 +818,12 @@ GameObject:
   m_Component:
   - component: {fileID: 404400}
   - component: {fileID: 9520566}
+  - component: {fileID: 5688725676689757009}
+  - component: {fileID: 2379255328733771931}
+  - component: {fileID: 7725453301032662227}
   m_Layer: 0
   m_Name: Character_Goblin_Male
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -875,6 +878,50 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!136 &5688725676689757009
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114438}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.27
+  m_Height: 1.78
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.91, z: 0}
+--- !u!114 &2379255328733771931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2178d99bc33245889060d164e7750ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 50
+  dead: 0
+--- !u!54 &7725453301032662227
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114438}
+  serializedVersion: 2
+  m_Mass: 7.41
+  m_Drag: 8.73
+  m_AngularDrag: 8.99
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &115104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1554,7 +1601,7 @@ GameObject:
   - component: {fileID: 487326}
   m_Layer: 0
   m_Name: Root
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

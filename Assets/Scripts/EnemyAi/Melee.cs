@@ -6,7 +6,7 @@ public class Melee : MonoBehaviour
 {
     public UnityEngine.AI.NavMeshAgent _agent;
     public LayerMask _whatIsGround, _whatIsPlayer;
-    public float _sightRange, _attackRange, _moveSpeed, _wanderRange, _attackSpeed, _blockTendancy;
+    public float _sightRange, _attackRange, _moveSpeed, _wanderRange, _attackSpeed, _blockTendancy, _damage, distanceThreshold = 4f;
     private Animator enemyAnimator;
     private bool _wanderLocationFound = false, _playerInSight = false, _playerInRange = false;
     private Vector3 _wanderLocation;
@@ -14,10 +14,13 @@ public class Melee : MonoBehaviour
     private Transform _player;
     private bool isRunning;
     private float _time;
+    private GameObject playerObject;
+    private bool isAttacking = false;
 
     void Start()
     {
         _attackTime = _attackSpeed;
+        playerObject = GameObject.Find("Character_Hero_Knight_Male");
         _player = GameObject.Find("Character").transform;
         enemyAnimator = GetComponent<Animator>();
         _time = Time.time;
@@ -26,14 +29,16 @@ public class Melee : MonoBehaviour
 
     void Update()
     {
-        _playerInSight = Physics.CheckSphere(transform.position, _sightRange, _whatIsPlayer);
-        _playerInRange = Physics.CheckSphere(transform.position, _attackRange, _whatIsPlayer);
+        if(!GetComponent<TakeDamageEnemy>().dead) {
+          _playerInSight = Physics.CheckSphere(transform.position, _sightRange, _whatIsPlayer);
+          _playerInRange = Physics.CheckSphere(transform.position, _attackRange, _whatIsPlayer);
 
-        if(!_playerInSight && !_playerInRange)Wander();
-        if(_playerInSight && !_playerInRange)ChasePlayer();
-        if(_playerInSight && _playerInRange)AttackPlayer();
+          if(!_playerInSight && !_playerInRange)Wander();
+          if(_playerInSight && !_playerInRange)ChasePlayer();
+          if(_playerInSight && _playerInRange)AttackPlayer();
 
-        RunningTimeout();
+          RunningTimeout();
+        }
     }
 
 
@@ -75,7 +80,7 @@ public class Melee : MonoBehaviour
             _attackTime = _attackSpeed;
         }
         Vector3 _distanceToPlayer = transform.position - _targetPos;
-        if (_distanceToPlayer.magnitude > 2f){
+        if (_distanceToPlayer.magnitude > distanceThreshold){
             _agent.SetDestination(_player.position);
             Run();
         }
@@ -91,12 +96,25 @@ public class Melee : MonoBehaviour
 
     private void LightAttack(){
         //TODO: Set up light attack with Connor
+        enemyAnimator.CrossFade("Attack", 0.2f);
+        StartCoroutine(Attack());
     }
 
     void RunningTimeout()
     {
         if(Mathf.Abs(_time - Time.time) > 0.1f) {
           enemyAnimator.SetBool("isRunning", false);
+        }
+    }
+
+    IEnumerator Attack()
+    {
+        yield return new WaitForSeconds(1f);
+        isAttacking = false;
+        Vector3 _targetPos = new Vector3(_player.position.x, transform.position.y, _player.position.z);
+        Vector3 _distanceToPlayer = transform.position - _targetPos;
+        if (_distanceToPlayer.magnitude <= distanceThreshold + 1){
+            playerObject.GetComponent<TakeDamagePlayer>().TakeDamage(_damage);
         }
     }
 }

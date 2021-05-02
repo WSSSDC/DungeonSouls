@@ -6,28 +6,44 @@ public class Knight : MonoBehaviour
 {
     public UnityEngine.AI.NavMeshAgent _agent;
     public LayerMask _whatIsGround, _whatIsPlayer;
-    public float _sightRange, _attackRange, _moveSpeed, _wanderRange, _attackSpeed, _blockTendancy;
-    public Animator enemyAnimator;
+    public float _sightRange, _attackRange, _moveSpeed, _wanderRange, _attackSpeed, _blockTendancy, _projectileSpeed, _magicTimeout = 5000f, distanceThreshold;
+    public GameObject magic;
+    public Transform _castPoint;
+    private Animator enemyAnimator;
     private bool _wanderLocationFound = false, _playerInSight = false, _playerInRange = false;
     private Vector3 _wanderLocation;
     private float _attackTime;
     private Transform _player;
-    
-        void Start()
+    private float _time;
+    private float _timeUntilMagic;
+    private GameObject playerObject;
+    private TakeDamageEnemy takeDamageEnemy;
+
+    void Start()
     {
+        _timeUntilMagic = _magicTimeout;
         _attackTime = _attackSpeed;
         _player = GameObject.Find("Character").transform;
+        enemyAnimator = GetComponent<Animator>();
+        takeDamageEnemy = GetComponent<TakeDamageEnemy>();
+        _time = Time.time;
     }
 
-    
+
     void Update()
     {
+      if(!takeDamageEnemy.dead) {
+        _timeUntilMagic -= Time.deltaTime;
+
         _playerInSight = Physics.CheckSphere(transform.position, _sightRange, _whatIsPlayer);
         _playerInRange = Physics.CheckSphere(transform.position, _attackRange, _whatIsPlayer);
 
         if(!_playerInSight && !_playerInRange)Wander();
         if(_playerInSight && !_playerInRange)ChasePlayer();
         if(_playerInSight && _playerInRange)AttackPlayer();
+
+        RunningTimeout();
+      }
     }
 
 
@@ -36,7 +52,7 @@ public class Knight : MonoBehaviour
         if(_wanderLocationFound)
         {
             _agent.SetDestination(_wanderLocation);
-            //Run();
+            Run();
         }else
         {
             SearchWanderLocation();
@@ -56,7 +72,8 @@ public class Knight : MonoBehaviour
     private void ChasePlayer()
     {
         _agent.SetDestination(_player.position);
-        //Run();
+        CastMagic();
+        Run();
     }
 
     private void AttackPlayer()
@@ -65,13 +82,14 @@ public class Knight : MonoBehaviour
         transform.LookAt(_targetPos);
         _attackTime -= Time.deltaTime;
         if(_attackTime < 0){
-            LightAttack();
+            HeavySwing();
             _attackTime = _attackSpeed;
         }
         Vector3 _distanceToPlayer = transform.position - _targetPos;
-        if (_distanceToPlayer.magnitude > 2f){
+        if (_distanceToPlayer.magnitude > 5f){
+            CastMagic();
             _agent.SetDestination(_player.position);
-            //Run();
+            Run();
         }
         else{
             _agent.SetDestination(transform.position);
@@ -79,11 +97,38 @@ public class Knight : MonoBehaviour
     }
 
     private void Run(){
-        if(!enemyAnimator.GetCurrentAnimatorStateInfo(0).IsName("run"))
-        enemyAnimator.Play("run");
+      _time = Time.time;
+      enemyAnimator.SetBool("isRunning", true);
     }
 
-    private void LightAttack(){
-        //TODO: Set up light attack with Connor
+    private void HeavySwing(){
+        enemyAnimator.CrossFade("Attack", 0.2f);
+        StartCoroutine(Attack());
+    }
+
+    void RunningTimeout()
+    {
+        if(Mathf.Abs(_time - Time.time) > 0.1f) {
+          enemyAnimator.SetBool("isRunning", false);
+        }
+    }
+
+     void CastMagic(){
+      if(_timeUntilMagic <= 0) {
+        _timeUntilMagic = _magicTimeout;
+        GameObject spell = Instantiate(magic, _castPoint.position, transform.rotation);
+        Rigidbody rb = spell.GetComponent<Rigidbody>();
+        rb.AddForce(transform.forward * (_projectileSpeed * 0.1f) * Time.deltaTime, ForceMode.VelocityChange);
+      }
+    }
+
+    IEnumerator Attack()
+    {
+        yield return new WaitForSeconds(1.2f);
+        Vector3 _targetPos = new Vector3(_player.position.x, transform.position.y, _player.position.z);
+        Vector3 _distanceToPlayer = transform.position - _targetPos;
+        if (_distanceToPlayer.magnitude <= distanceThreshold + 1){
+            playerObject.GetComponent<TakeDamagePlayer>().TakeDamage(20);
+        }
     }
 }

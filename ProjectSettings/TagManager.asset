@@ -12,6 +12,8 @@ TagManager:
   - SkeletonMageBlast
   - SkeletonKnight
   - OrcCheiftan
+  - PlayerSword
+  - Enemy
   layers:
   - Default
   - TransparentFX

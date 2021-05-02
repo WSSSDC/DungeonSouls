@@ -6,18 +6,20 @@ public class Brute : MonoBehaviour
 {
     public UnityEngine.AI.NavMeshAgent _agent;
     public LayerMask _whatIsGround, _whatIsPlayer;
-    public float _sightRange, _attackRange, _moveSpeed, _wanderRange, _attackSpeed, _blockTendancy;
+    public float _sightRange, _attackRange, _moveSpeed, _wanderRange, _attackSpeed, _blockTendancy, _damage = 15;
     private Animator enemyAnimator;
     private bool _wanderLocationFound = false, _playerInSight = false, _playerInRange = false;
     private Vector3 _wanderLocation;
     private float _attackTime;
     private Transform _player;
     private float _time;
+    private GameObject playerObject;
 
     void Start()
     {
         _attackTime = _attackSpeed;
         _player = GameObject.Find("Character").transform;
+        playerObject = GameObject.Find("Character_Hero_Knight_Male");
         enemyAnimator = GetComponent<Animator>();
         _time = Time.time;
     }
@@ -25,6 +27,7 @@ public class Brute : MonoBehaviour
 
     void Update()
     {
+      if(!GetComponent<TakeDamageEnemy>().dead) {
         _playerInSight = Physics.CheckSphere(transform.position, _sightRange, _whatIsPlayer);
         _playerInRange = Physics.CheckSphere(transform.position, _attackRange, _whatIsPlayer);
 
@@ -33,6 +36,7 @@ public class Brute : MonoBehaviour
         if(_playerInSight && _playerInRange)AttackPlayer();
 
         RunningTimeout();
+      }
     }
 
 
@@ -89,7 +93,8 @@ public class Brute : MonoBehaviour
     }
 
     private void LightAttack(){
-        //TODO: Set up light attack with Connor
+        enemyAnimator.CrossFade("Attack", 0.2f);
+        playerObject.GetComponent<TakeDamagePlayer>().TakeDamage(_damage);
     }
 
     void RunningTimeout()

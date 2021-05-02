@@ -9,28 +9,30 @@ public class Ranged : MonoBehaviour
     public float _sightRange, _moveSpeed, _wanderRange, _attackSpeed, _projectileSpeed;
     public GameObject arrow;
     public Transform _shootPoint;
-    public Animator enemyAnimator;
+    private Animator enemyAnimator;
     private bool _wanderLocationFound = false, _playerInSight = false;
     private Vector3 _wanderLocation;
     private float _attackTime;
     private Transform _player;
-    
-        void Start()
+
+    void Start()
     {
         _attackTime = _attackSpeed;
         _player = GameObject.Find("Character").transform;
+        enemyAnimator = GetComponent<Animator>();
     }
 
-    
+
     void Update()
     {
+      if(!GetComponent<TakeDamageEnemy>().dead) {
         _playerInSight = Physics.CheckSphere(transform.position, _sightRange, _whatIsPlayer);
-
         if(!_playerInSight)Wander();
         if(_playerInSight)AttackPlayer();
+      }
     }
 
-    private void Awake() 
+    private void Awake()
     {
         _agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
