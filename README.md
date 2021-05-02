@@ -14,7 +14,7 @@ We decided to make Dungeon Souls because we wanted to hone our skills in game de
 You're a bounty hunter looking to make some quick bucks. You've heard of this evil and filthy rich goblin king living in an abandoned castle far away from any civilization. You make it your mission to defeat the goblin king and his minions and take over the castle for yourself.
 
 # How we built it
-Dungeon Souls was built using the Unity game engine and was designed with Synty low-poly asset packs. The scripts were coded in C#. It took 830 assets, XXX soundtracks and, 1550 lines of code written by us (Total: 6.95K).
+Dungeon Souls was built using the Unity game engine and was designed with Synty low-poly asset packs. The scripts were coded in C#. It took 830 assets and 1550 lines of code written by us (Total: 6.95K).
 
 # Challenges we ran into
 * Getting physics to work
