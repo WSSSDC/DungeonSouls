@@ -1,5 +1,6 @@
 # Play The Game!
 You can go to our website to play the web version right from your browser! Or you can also download the version made for your operating system.
+
 Controls:
 * `WASD` to move
 * `Left-Click` to attack
