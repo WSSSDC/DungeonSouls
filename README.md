@@ -1,14 +1,20 @@
 # Play The Game!
 You can go to our website to play the web version right from your browser! Or you can also download the version made for your operating system.
 
+Controls:
+* `WASD` to move
+* `Left-Click` to attack
+* `Right Click` to Block / Aim Bow
+* `Tab` to switch modes between Sword & Bow
+* `E` to open the doors
 # Inspiration
 We decided to make Dungeon Souls because we wanted to hone our skills in game development by going for a much larger game with more mechanics.
 
 # Background
-The legendary sword, Excalibur has been lost for 200 years. No one knows where it is. You're a bounty hunter looking to make some quick bucks. You've heard of this evil and filthy rich goblin king living in an abandoned castle far away from any civilization. You make it your mission to defeat the goblin king and his minions and take over the castle in hopes of claiming Excalibur for yourself.
+You're a bounty hunter looking to make some quick bucks. You've heard of this evil and filthy rich goblin king living in an abandoned castle far away from any civilization. You make it your mission to defeat the goblin king and his minions and take over the castle for yourself.
 
 # How we built it
-Dungeon Souls was built using the Unity game engine and was designed with Synty low-poly asset packs. The scripts were coded in C#. It took 5 assets, XXX soundtracks and, 850 lines of code written by us (Total: 6.26K).
+Dungeon Souls was built using the Unity game engine and was designed with Synty low-poly asset packs. The scripts were coded in C#. It took 830 assets, XXX soundtracks and, 1550 lines of code written by us (Total: 6.95K).
 
 # Challenges we ran into
 * Getting physics to work
@@ -22,7 +28,6 @@ Dungeon Souls was built using the Unity game engine and was designed with Synty 
 * Getting animations for more fluid gamplay
 * A lot of new enemy types (12)
 * Adding bow combat
-* Cutscenes
 * Adding music and other ambient sounds to improve the experience
 
 # What we learned
@@ -37,11 +42,19 @@ Dungeon Souls was built using the Unity game engine and was designed with Synty 
 * Improve the lighting
 * Add an inventory system
 * Improve enemy AI and variety
-* Make more cutscenes
+* Cutscenes
 * More Animations
 * Adding more levels
 * Introducing new mechanics and gameplay
 * More enemies
 
+# Gallery
+![Screenshot (23)](https://user-images.githubusercontent.com/47152801/116830049-98528400-ab75-11eb-9c8b-eb92811c7c47.png)
+![Screenshot (24)](https://user-images.githubusercontent.com/47152801/116830050-9ab4de00-ab75-11eb-85ab-a32efb1fb330.png)
+![Screenshot (24)](https://user-images.githubusercontent.com/47152801/116830013-78bb5b80-ab75-11eb-8732-1ba35411a503.png)
+![Screenshot (26)](https://user-images.githubusercontent.com/47152801/116830053-9f799200-ab75-11eb-9aee-4539744103fd.png)
+![Screenshot (30)](https://user-images.githubusercontent.com/47152801/116830055-a1dbec00-ab75-11eb-8e74-7312e5a7310e.png)
+![Screenshot (36)](https://user-images.githubusercontent.com/47152801/116830057-a3a5af80-ab75-11eb-96e0-abc2ea841bee.png)
+
 # Acknowledgements
-We want to thank everyone RUHacks2021 for giving us this opportunity. We would also like to thank Synty Studios for providing all the high quality and easy-to-use assets 😜.
+We want to thank everyone RUHacks2021 for giving us this opportunity. We would also like to thank Synty Studios for providing all the high quality and easy-to-use assets .
