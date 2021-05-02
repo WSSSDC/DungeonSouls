@@ -5,6 +5,7 @@ Controls:
 * `Left-Click` to attack
 * `Right Click` to Block / Aim Bow
 * `Tab` to switch modes between Sword & Bow
+* `E` to open the doors
 # Inspiration
 We decided to make Dungeon Souls because we wanted to hone our skills in game development by going for a much larger game with more mechanics.
 
